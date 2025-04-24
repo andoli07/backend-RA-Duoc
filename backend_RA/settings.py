@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'administracion',
+    'corsheaders',#Nueva linea
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # URL de tu frontend React
 ]
 
 MIDDLEWARE = [
@@ -48,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',#Nueva linea
 ]
 
 ROOT_URLCONF = 'backend_RA.urls'
