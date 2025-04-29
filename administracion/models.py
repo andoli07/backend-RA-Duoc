@@ -1,5 +1,6 @@
 from django.db import models
 from administracion.validadorRut import validador_rut_django # para validar el rut
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # Create your models here.
 
@@ -55,15 +56,20 @@ class UnidadHabitacional(models.Model):
         else:
             return self.numero
 
-class Residente(models.Model):
+class Residente(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=12, primary_key=True, validators=[validador_rut_django])
     correo = models.EmailField(unique=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     unidad = models.ForeignKey(UnidadHabitacional, on_delete=models.PROTECT)
     rol = models.ForeignKey(Rol, on_delete=models.PROTECT)
+    
+    # Campos para autenticación
+    password = models.CharField(max_length=128)  # Guardará el hash de la contraseña
+    is_active = models.BooleanField(default=True)
+    
+    USERNAME_FIELD = 'correo'  # Campo usado para login (email)
+    REQUIRED_FIELDS = ['rut', 'nombre']  # Campos requeridos al crear usuario
 
     def __str__(self):
         return self.nombre
-    
-
